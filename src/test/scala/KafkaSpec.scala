@@ -23,7 +23,7 @@ class KafkaSpec extends FlatSpec with EmbeddedKafka with BeforeAndAfterAll {
   it should "consume message from published topic" in {
     implicit val serializer = new UserSerializer
     val list = List(User("name1",1),User("name2",2),User("name3",3),User("name4",4),User("name5",5),User("name6",6))
-    list.map(publishToKafka(topic,_))
+    list.foreach(publishToKafka(topic,_))
     // producer.writeToKafka(topic)
     val response = consumer.consumeFromKafka(topic)
     assert(response.size > 6)
@@ -32,7 +32,6 @@ class KafkaSpec extends FlatSpec with EmbeddedKafka with BeforeAndAfterAll {
   override def afterAll(): Unit = {
     EmbeddedKafka.stop()
   }
-
 }
 
 
